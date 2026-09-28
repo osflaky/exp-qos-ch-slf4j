@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2004-2026, QOS.ch (Switzerland)
+  ~ All rights reserved.
+  ~
+  ~  Permission is hereby granted, free  of charge, to any person obtaining
+  ~  a  copy  of this  software  and  associated  documentation files  (the
+  ~  "Software"), to  deal in  the Software without  restriction, including
+  ~  without limitation  the rights to  use, copy, modify,  merge, publish,
+  ~  distribute,  sublicense, and/or sell  copies of  the Software,  and to
+  ~  permit persons to whom the Software  is furnished to do so, subject to
+  ~  the following conditions:
+  ~
+  ~  The  above  copyright  notice  and  this permission  notice  shall  be
+  ~  included in all copies or substantial portions of the Software.
+  ~
+  ~  THE  SOFTWARE IS  PROVIDED  "AS  IS", WITHOUT  WARRANTY  OF ANY  KIND,
+  ~  EXPRESS OR  IMPLIED, INCLUDING  BUT NOT LIMITED  TO THE  WARRANTIES OF
+  ~  MERCHANTABILITY,    FITNESS    FOR    A   PARTICULAR    PURPOSE    AND
+  ~  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  ~  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+  ~  OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
+  ~  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-parent</artifactId>
+    <version>3.0.0-rc0-SNAPSHOT</version>
+    <relativePath>../parent/pom.xml</relativePath>
+  </parent>
+
+  <artifactId>slf4j-reload4j</artifactId>
+
+
+  <packaging>jar</packaging>
+  <name>SLF4J Reload4j Provider</name>
+  <description>SLF4J Reload4j Provider</description>
+  <url>http://reload4j.qos.ch</url>
+
+  <properties>
+    <slf4j.provider.implementation>org.slf4j.reload4j.Reload4jServiceProvider</slf4j.provider.implementation>
+    <slf4j.provider.type>reload4j</slf4j.provider.type>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.reload4j</groupId>
+      <artifactId>reload4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-testing</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!--
+          java.lang.IllegalAccessException: class org.apache.log4j.helpers.OptionConverter
+          (in module ch.qos.reload4j) cannot access class org.slf4j.reload4j.testHarness.RecursiveAppender
+          (in module org.slf4j.reload4j) because module org.slf4j.reload4j does not export org.slf4j.reload4j.testHarness
+           to module ch.qos.reload4j
+
+          -->
+          <argLine>
+            --add-opens org.slf4j.reload4j/org.slf4j.reload4j.testHarness=ch.qos.reload4j
+          </argLine>
+        </configuration>
+      </plugin>
+      <!--        <executions>-->
+      <!--          <execution>-->
+      <!--            <id>default-test</id>-->
+      <!--            <configuration>-->
+      <!--              <parallel>classes</parallel>-->
+      <!--              <threadCount>8</threadCount>-->
+      <!--              <forkCount>1C</forkCount>-->
+      <!--              <reuseForks>true</reuseForks>-->
+      <!--              <reportFormat>plain</reportFormat>-->
+      <!--              <trimStackTrace>false</trimStackTrace>-->
+      <!--              <excludes>-->
+      <!--                <exclude>**/AllTest.java</exclude>-->
+      <!--                <exclude>**/PackageTest.java</exclude>-->
+      <!--                <exclude>org.slf4j.reload4j.EventFieldsTest</exclude>-->
+      <!--                <exclude>org.slf4j.testing.MultithreadedInitializationTest</exclude>-->
+      <!--              </excludes>-->
+      <!--            </configuration>-->
+      <!--          </execution>-->
+
+      <!--          <execution>-->
+      <!--            <id>singleJVM</id>-->
+      <!--            <goals>-->
+      <!--              <goal>test</goal>-->
+      <!--            </goals>-->
+      <!--            <configuration>-->
+      <!--              <forkCount>4</forkCount>-->
+      <!--              <reuseForks>false</reuseForks>-->
+      <!--              <includes>-->
+      <!--                <include>org.slf4j.testing.MultithreadedInitializationTest</include>-->
+      <!--                <include>org.slf4j.reload4j.EventFieldsTest</include>-->
+      <!--              </includes>-->
+      <!--            </configuration>-->
+      <!--          </execution>-->
+      <!--        </executions>-->
+      <!--      </plugin>-->
+
+    </plugins>
+  </build>
+</project>
